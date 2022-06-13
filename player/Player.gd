@@ -5,17 +5,24 @@ var velocity = Vector2.ZERO
 export (int) var speed = 100
 export (int) var jump_speed = -200
 export (int) var gravity = 500
+export (float, 0, 1.0) var friction = 0.1
+export (float, 0, 1.0) var acceleration = 0.25
 
 func _physics_process(delta):
 
-	velocity.x = 0
+	var dir = 0
 	if Input.is_action_pressed("walk_right"):
 		$AnimatedSprite.flip_h = false
-		velocity.x += speed
+		dir += 1
 		
 	if Input.is_action_pressed("walk_left"):
-		velocity.x -= speed
 		$AnimatedSprite.flip_h = true
+		dir -= 1
+		
+	if dir != 0:
+		velocity.x = lerp(velocity.x, dir * speed, acceleration)
+	else:
+		velocity.x = lerp(velocity.x, 0, friction)
 		
 	if velocity.x == 0:
 		$AnimatedSprite.animation = "idle"
