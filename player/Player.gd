@@ -24,7 +24,7 @@ func _physics_process(delta):
 	else:
 		velocity.x = lerp(velocity.x, 0, friction)
 		
-	if velocity.x == 0:
+	if abs(velocity.x) < 30:
 		$AnimatedSprite.animation = "idle"
 	else:
 		$AnimatedSprite.animation = "walk"
